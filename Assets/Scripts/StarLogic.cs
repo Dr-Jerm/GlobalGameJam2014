@@ -4,7 +4,7 @@ using System.Collections;
 public class StarLogic : MonoBehaviour
 {
 
-    public static int playerWhoIsIt = 0;
+    //public static int playerWhoIsIt = 0;
     private static PhotonView ScenePhotonView;
 
     // Use this for initialization
@@ -18,10 +18,10 @@ public class StarLogic : MonoBehaviour
         // game logic: if this is the only player, we're "it"
         if (PhotonNetwork.playerList.Length == 1)
         {
-            playerWhoIsIt = PhotonNetwork.player.ID;
+            //playerWhoIsIt = PhotonNetwork.player.ID;
         }
 
-        Debug.Log("playerWhoIsIt: " + playerWhoIsIt);
+        //Debug.Log("playerWhoIsIt: " + playerWhoIsIt);
     }
 
     public void OnPhotonPlayerConnected(PhotonPlayer player)
@@ -31,37 +31,37 @@ public class StarLogic : MonoBehaviour
         // when new players join, we send "who's it" to let them know
         // only one player will do this: the "master"
 
-        if (PhotonNetwork.isMasterClient)
-        {
-            TagPlayer(playerWhoIsIt);
-        }
+//        if (PhotonNetwork.isMasterClient)
+//        {
+//            TagPlayer(playerWhoIsIt);
+//        }
     }
 
-    public static void TagPlayer(int playerID)
-    {
-        Debug.Log("TagPlayer: " + playerID);
-        ScenePhotonView.RPC("TaggedPlayer", PhotonTargets.All, playerID);
-    }
-
-    [RPC]
-    public void TaggedPlayer(int playerID)
-    {
-        playerWhoIsIt = playerID;
-        Debug.Log("TaggedPlayer: " + playerID);
-    }
+//    public static void TagPlayer(int playerID)
+//    {
+//        Debug.Log("TagPlayer: " + playerID);
+//        ScenePhotonView.RPC("TaggedPlayer", PhotonTargets.All, playerID);
+//    }
+//
+//    [RPC]
+//    public void TaggedPlayer(int playerID)
+//    {
+//        playerWhoIsIt = playerID;
+//        Debug.Log("TaggedPlayer: " + playerID);
+//    }
 
     public void OnPhotonPlayerDisconnected(PhotonPlayer player)
     {
         Debug.Log("OnPhotonPlayerDisconnected: " + player);
 
-        if (PhotonNetwork.isMasterClient)
-        {
-            if (player.ID == playerWhoIsIt)
-            {
-                // if the player who left was "it", the "master" is the new "it"
-                TagPlayer(PhotonNetwork.player.ID);
-            }
-        }
+//        if (PhotonNetwork.isMasterClient)
+//        {
+//            if (player.ID == playerWhoIsIt)
+//            {
+//                // if the player who left was "it", the "master" is the new "it"
+////                TagPlayer(PhotonNetwork.player.ID);
+//            }
+//        }
     }
 
     public void OnMasterClientSwitched()

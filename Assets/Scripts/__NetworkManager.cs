@@ -3,7 +3,7 @@ using System.Collections;
 
 
 
-public class NetworkManager : MonoBehaviour {
+public class __NetworkManager : MonoBehaviour {
 
 	private float btnX;
 	private float btnY;
