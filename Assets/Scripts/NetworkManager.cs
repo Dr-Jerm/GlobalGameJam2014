@@ -21,6 +21,11 @@ public class NetworkManager : MonoBehaviour {
 		this.btnY = Screen.width * 0.1F;
 		this.btnH = Screen.height * 0.1F;
 		this.btnW = Screen.width * 0.1F;
+		Network.natFacilitatorIP = "107.170.255.163";
+		Network.natFacilitatorPort = 50005;
+		MasterServer.ipAddress = "107.170.255.163";
+		MasterServer.dedicatedServer = true;
+		MasterServer.port = 23466;
 	}
 
 	void OnServerInitialized() {
