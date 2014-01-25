@@ -38,7 +38,9 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-        if (stream.isWriting)
+		Debug.Log("MyID:"+gameObject.name+" SerializeView");
+
+		if (stream.isWriting)
         {
             //We own this player: send the others our data
 			stream.SendNext((int)controllerScript._shipState);
