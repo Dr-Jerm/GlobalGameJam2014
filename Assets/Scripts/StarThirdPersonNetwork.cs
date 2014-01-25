@@ -6,6 +6,10 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
     StarThirdPersonCamera cameraScript;
     StarThirdPersonController controllerScript;
 
+	private Vector3 correctPlayerPos = Vector3.zero; //We lerp towards this
+	private Quaternion correctPlayerRot = Quaternion.identity; //We lerp towards this
+
+
     void Awake()
     {
 		cameraScript = gameObject.GetComponent<StarThirdPersonCamera>();
@@ -38,8 +42,8 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
         {
             //We own this player: send the others our data
 			stream.SendNext((int)controllerScript._shipState);
-            stream.SendNext(transform.position);
-            stream.SendNext(transform.rotation); 
+			stream.SendNext(gameObject.rigidbody.transform.position);
+			stream.SendNext(gameObject.rigidbody.transform.rotation); 
         }
         else
         {
@@ -47,19 +51,19 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			controllerScript._shipState = (ShipState)(int)stream.ReceiveNext();
             correctPlayerPos = (Vector3)stream.ReceiveNext();
             correctPlayerRot = (Quaternion)stream.ReceiveNext();
+
         }
     }
 
-    private Vector3 correctPlayerPos = Vector3.zero; //We lerp towards this
-    private Quaternion correctPlayerRot = Quaternion.identity; //We lerp towards this
-
+   
     void Update()
     {
         if (!photonView.isMine)
         {
-            //Update remote player (smooth this, this looks good, at the cost of some accuracy)
-            transform.position = Vector3.Lerp(transform.position, correctPlayerPos, Time.deltaTime * 5);
-            transform.rotation = Quaternion.Lerp(transform.rotation, correctPlayerRot, Time.deltaTime * 5);
+            
+			//Update remote player (smooth this, this looks good, at the cost of some accuracy)
+            gameObject.rigidbody.transform.position = Vector3.Lerp(transform.position, correctPlayerPos, Time.deltaTime * 5);
+			gameObject.rigidbody.transform.rotation = Quaternion.Lerp(transform.rotation, correctPlayerRot, Time.deltaTime * 5);
         }
     }
 
