@@ -153,26 +153,35 @@ public class StarThirdPersonController : MonoBehaviour
 			float inputVert = Input.GetAxis ("Vertical") * thrustForce;
 			float inputHorz = Input.GetAxis ("Horizontal") * turnForce;
 
-			//Debug.Log ("-" + Input.GetAxis ("Vertical"));
-			rearthruster_light.intensity = Input.GetAxis ("Vertical") * rearthruster_brightness;
-			frontthruster_light.intensity = -Input.GetAxis ("Vertical") * frontthruster_brightness;
-			leftrearthruster_light.intensity = (Input.GetAxis ("Horizontal")) * turningthruster_brightness;
-			leftfrontthruster_light.intensity = -(Input.GetAxis ("Horizontal")) * turningthruster_brightness;
-			rightrearthruster_light.intensity = -(Input.GetAxis ("Horizontal")) * turningthruster_brightness;
-			rightfrontthruster_light.intensity = (Input.GetAxis ("Horizontal")) * turningthruster_brightness;
-
-
-			if (rigidbody.velocity.magnitude > maxVelocity) {
-					inputVert = 0;
-					rigidbody.velocity = rigidbody.velocity.normalized * maxVelocity; 
-			}
-
-			if (rigidbody.angularVelocity.magnitude > 0) {
-					rigidbody.AddRelativeTorque ((-rigidbody.angularVelocity.normalized / 2) * Time.deltaTime);
-			}
-
 			rigidbody.AddRelativeTorque (0, 0, inputHorz * Time.deltaTime);
 			rigidbody.AddRelativeForce (0, inputVert * Time.deltaTime, 0);
+
+			//Debug.Log ("-" + Input.GetAxis ("Vertical"));
+			if(rearthruster_light != null &&
+			   frontthruster_light != null &&
+			   leftrearthruster_light != null &&
+			   leftfrontthruster_light != null &&
+			   rightrearthruster_light != null &&
+			   rightfrontthruster_light != null)
+			{
+				rearthruster_light.intensity = Input.GetAxis ("Vertical") * rearthruster_brightness;
+				frontthruster_light.intensity = -Input.GetAxis ("Vertical") * frontthruster_brightness;
+				leftrearthruster_light.intensity = (Input.GetAxis ("Horizontal")) * turningthruster_brightness;
+				leftfrontthruster_light.intensity = -(Input.GetAxis ("Horizontal")) * turningthruster_brightness;
+				rightrearthruster_light.intensity = -(Input.GetAxis ("Horizontal")) * turningthruster_brightness;
+				rightfrontthruster_light.intensity = (Input.GetAxis ("Horizontal")) * turningthruster_brightness;
+			}
+			else
+			{
+				rearthruster_light = GameObject.Find("rearthruster_pointlight").GetComponent<Light>();
+				frontthruster_light = GameObject.Find("frontthruster_pointlight").GetComponent<Light>();
+				leftrearthruster_light= GameObject.Find("leftrearthruster_pointlight").GetComponent<Light>();
+				leftfrontthruster_light= GameObject.Find("leftfrontthruster_pointlight").GetComponent<Light>();
+				rightrearthruster_light= GameObject.Find("rightrearthruster_pointlight").GetComponent<Light>();
+				rightfrontthruster_light= GameObject.Find("rightfrontthruster_pointlight").GetComponent<Light>();
+			}
+
+
 		}
 	}
 
