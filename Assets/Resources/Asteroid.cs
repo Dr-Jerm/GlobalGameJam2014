@@ -12,7 +12,8 @@ public class Asteroid : MonoBehaviour {
   // Use this for initialization
   void Start () {
     Debug.Log("AsteroidSpawned");
-    this.asteroid = GameObject.CreatePrimitive(PrimitiveType.Cube);
+    this.asteroid = GameObject.CreatePrimitive(PrimitiveType.Sphere);
+	this.asteroid.transform.localScale = new Vector3(3f,3f,3f);
     this.asteroidRigidBody = asteroid.AddComponent<Rigidbody>(); // Add the rigidbody.
     this.asteroidRigidBody.mass = 5; // Set the asteroid's mass to 5 via the Rigidbody.
     this.asteroidRigidBody.useGravity = false;
