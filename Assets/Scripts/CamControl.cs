@@ -21,6 +21,7 @@ public class CamControl : MonoBehaviour
 		newCamPostion.y = shiptransform.position.y;
 		transform.position = newCamPostion;
 
+		//transform.LookAt (shiptransform);
 		transform.rotation = shiptransform.rotation;
 	}
 }
