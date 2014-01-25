@@ -39,7 +39,7 @@ public class NetworkManager : MonoBehaviour {
 
 	void startServer() {
 		Debug.Log("starting server");
-		Network.InitializeServer(32, 25001, !Network.HavePublicAddress());
+		Network.InitializeServer(32, 25001, false);
 		Debug.Log("Server initialized");
 		MasterServer.RegisterHost(this.gameName, "gamename", "This is our test game");
 	}
@@ -67,10 +67,12 @@ public class NetworkManager : MonoBehaviour {
 			}
 			MasterServer.ClearHostList();
 		}
+		Debug.Log("NAT facil: " + Network.natFacilitatorIP + ":" + Network.natFacilitatorPort);
+		Debug.Log("Master: " + MasterServer.ipAddress + ":" + MasterServer.port);
 	}
 
 	void OnGUI() {
-		if (!Network.isServer) {
+		if (Network.isClient || !Network.isServer) {
 			Rect r1 = new Rect(btnX, btnY, btnH, btnW);
 			Rect r2 = new Rect(btnX, btnY * 2, btnH, btnW);
 			
@@ -81,10 +83,17 @@ public class NetworkManager : MonoBehaviour {
 				Debug.Log ("refreshing hosts");
 				this.refreshHostList();
 			}
+			HostData host = null;
 			for (int i = 0; i < this.hostData.Length; i++) {
 				if (GUI.Button(new Rect(this.btnX * 1.5F, this.btnY * i * 1.5F, this.btnW, this.btnH), this.hostData[i].gameName)) {
-					Network.Connect(this.hostData[i]);
+					Debug.Log("ip is: " + this.hostData[i].ip[0]);
+					Debug.Log("network status is: " + Network.TestConnection());
+					host = this.hostData[i];
 				}
+			}
+			if (host != null) {
+				Network.Connect(host);
+				Debug.Log("i am a client." + Network.isClient);
 			}
 		}
 	}
