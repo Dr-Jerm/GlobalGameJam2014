@@ -39,7 +39,7 @@ public class NetworkManager : MonoBehaviour {
 
 	void startServer() {
 		Debug.Log("starting server");
-		Network.InitializeServer(32, 25001, !Network.HavePublicAddress());
+		Network.InitializeServer(32, 25001, false);
 		Debug.Log("Server initialized");
 		MasterServer.RegisterHost(this.gameName, "gamename", "This is our test game");
 	}
@@ -83,6 +83,8 @@ public class NetworkManager : MonoBehaviour {
 			}
 			for (int i = 0; i < this.hostData.Length; i++) {
 				if (GUI.Button(new Rect(this.btnX * 1.5F, this.btnY * i * 1.5F, this.btnW, this.btnH), this.hostData[i].gameName)) {
+					Debug.Log("ip is: " + this.hostData[i].ip[0]);
+					Debug.Log("network status is: " + Network.TestConnection());
 					Network.Connect(this.hostData[i]);
 				}
 			}
