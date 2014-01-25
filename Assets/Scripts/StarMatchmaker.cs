@@ -24,9 +24,10 @@ public class StarMatchmaker : Photon.MonoBehaviour
     void OnJoinedRoom()
     {
 
-        GameObject spaceship = PhotonNetwork.Instantiate("monsterprefab", Vector3.zero, Quaternion.identity, 0);
-        spaceship.GetComponent<myThirdPersonController>().isControllable = true;
+        GameObject spaceship = PhotonNetwork.Instantiate("spaceship", Vector3.zero, Quaternion.identity, 0);
+        //spaceship.GetComponent<myThirdPersonController>().isControllable = true;
         myPhotonView = spaceship.GetComponent<PhotonView>();
+		Camera.main.GetComponent<CamControl>().shiptransform = GameObject.FindGameObjectWithTag ("ship").transform;
         
     }
 
