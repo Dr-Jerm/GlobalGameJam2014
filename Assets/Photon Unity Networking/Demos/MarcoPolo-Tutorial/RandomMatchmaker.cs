@@ -23,7 +23,7 @@ public class RandomMatchmaker : Photon.MonoBehaviour
 
     void OnJoinedRoom()
     {
-        GameObject monster = PhotonNetwork.Instantiate("monsterprefab", Vector3.zero, Quaternion.identity, 0);
+        GameObject monster = PhotonNetwork.Instantiate("monstership", Vector3.zero, Quaternion.identity, 0);
         monster.GetComponent<myThirdPersonController>().isControllable = true;
         myPhotonView = monster.GetComponent<PhotonView>();
     }
@@ -32,18 +32,18 @@ public class RandomMatchmaker : Photon.MonoBehaviour
     {
         GUILayout.Label(PhotonNetwork.connectionStateDetailed.ToString());
 
-        if (PhotonNetwork.connectionStateDetailed == PeerState.Joined)
-        {
-            bool shoutMarco = GameLogic.playerWhoIsIt == PhotonNetwork.player.ID;
-
-            if (shoutMarco && GUILayout.Button("Marco!"))
-            {
-                myPhotonView.RPC("Marco", PhotonTargets.All);
-            }
-            if (!shoutMarco && GUILayout.Button("Polo!"))
-            {
-                myPhotonView.RPC("Polo", PhotonTargets.All);
-            }
-        }
+//        if (PhotonNetwork.connectionStateDetailed == PeerState.Joined)
+//        {
+//            bool shoutMarco = GameLogic.playerWhoIsIt == PhotonNetwork.player.ID;
+//
+//            if (shoutMarco && GUILayout.Button("Marco!"))
+//            {
+//                myPhotonView.RPC("Marco", PhotonTargets.All);
+//            }
+//            if (!shoutMarco && GUILayout.Button("Polo!"))
+//            {
+//                myPhotonView.RPC("Polo", PhotonTargets.All);
+//            }
+//        }
     }
 }
