@@ -77,7 +77,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			correctPlayerVelocity = (Vector3)stream.ReceiveNext();
 			correctPlayerInputHorz = (float)stream.ReceiveNext();
 			correctPlayerInputVert = (float)stream.ReceiveNext();
-			playerevent = (PlayerEvent)(float)stream.ReceiveNext();
+			playerevent = (PlayerEvent)stream.ReceiveNext();
 
         }
     }
