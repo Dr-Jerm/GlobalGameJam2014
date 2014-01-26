@@ -131,6 +131,10 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			controllerScript.replicaterespawn();
 
 		}
+		if (playerevent == PlayerEvent.None) 
+		{
+			controllerScript.fixVisible();
+		}
 		playerevent = PlayerEvent.None;
 
 
