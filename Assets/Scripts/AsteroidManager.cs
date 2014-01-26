@@ -31,7 +31,7 @@ public class AsteroidManager : MonoBehaviour {
     GameObject newInstance = Instantiate(asteroidPrefabs[(int)Random.Range(1, asteroidPrefabs.Count)]) as GameObject;
 
     Asteroid a = newInstance.GetComponent(typeof(Asteroid)) as Asteroid;
-    a.init(id, new Vector2(Random.Range(-40.0F, 40.0F), Random.Range(-40.0F, 40.0F)), new Vector2(Random.Range(-2.0F, 2.0F), Random.Range(-2.0F, 2.0F)));
+    a.init(id, new Vector2(Random.Range(-55.0F, 55.0F), Random.Range(-55.0F, 55.0F)), new Vector2(Random.Range(-2.0F, 2.0F), Random.Range(-2.0F, 2.0F)));
     asteroids.Add(id, a);
   }
 }
