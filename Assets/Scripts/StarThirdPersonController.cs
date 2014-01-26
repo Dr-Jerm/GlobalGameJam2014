@@ -279,6 +279,10 @@ public class StarThirdPersonController : MonoBehaviour
 	{
 		print("You Died");
 		Instantiate(deathExplosion, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
+
+		rigidbody.AddRelativeTorque (rigidbody.angularVelocity*5);
+		rigidbody.AddRelativeForce (rigidbody.velocity*5);
+
 		meshRender.enabled = false;
 		meshcollider.enabled = false;
 
@@ -312,6 +316,7 @@ public class StarThirdPersonController : MonoBehaviour
 	{
 		meshRender.enabled = true;
 		meshcollider.enabled = true;
+		print ("replication respawn");
 		Instantiate(respawnSparks, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
 	}
 	
