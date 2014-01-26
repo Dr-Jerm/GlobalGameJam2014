@@ -322,9 +322,10 @@ public class StarThirdPersonController : MonoBehaviour
 
 	void fireMissleEvent()
 	{
-		Instantiate(missle, gameObject.rigidbody.transform.Find("misslespawnpoint").transform.position, gameObject.rigidbody.transform.rotation);	
-		MissleAI missleAI = missle.GetComponent<MissleAI> ();
-		missleAI.setInitialSpeed (gameObject.rigidbody.velocity, gameObject.rigidbody.angularVelocity);
+
+		PhotonNetwork.Instantiate("missileprefab", gameObject.rigidbody.transform.Find("misslespawnpoint").transform.position, gameObject.rigidbody.transform.rotation, 0);	
+		//MissleAI missleAI = missle.GetComponent<MissleAI> ();
+		//missleAI.setInitialSpeed (gameObject.rigidbody.velocity, gameObject.rigidbody.angularVelocity);
 	}
 
 
