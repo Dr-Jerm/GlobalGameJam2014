@@ -23,6 +23,8 @@ public class StarThirdPersonController : MonoBehaviour
 	public float inputHorz=0;
 	public float inputJump=0;
 
+	private int misslecooldown = 0; 
+
 	private PhotonView myPhotonView;
 	
 	int thrustForce = 200; 
@@ -51,8 +53,8 @@ public class StarThirdPersonController : MonoBehaviour
 	float frontthruster_brightness = 1f;
 	float turningthruster_brightness = 0.5f;
 	float radar_brightness_coeficient = 1f;
-	float radarpower = 7; 
-	float radarpowerMax = 7; 
+	float radarpower = 1.0f; 
+	float radarpowerMax = 1.0f; 
 	float radarbrightness;
 
 	int spawntimermax = 10;
@@ -147,7 +149,29 @@ public class StarThirdPersonController : MonoBehaviour
 			leftfrontthruster_light.intensity = inputHorz * turningthruster_brightness;
 			rightrearthruster_light.intensity = inputHorz * turningthruster_brightness;
 			rightfrontthruster_light.intensity = -inputHorz * turningthruster_brightness;
+
+			if(inputJump > 0.9f)
+			{
+				radarpower -= 0.1f; 
+				if(radarpower <= 0.0f)
+				{
+					radarpower = 0; 
+				}
+				radarbrightness = radarpower*radar_brightness_coeficient;
+			}
+			else
+			{
+				radarpower = radarpowerMax; 
+				radarbrightness = 0; 
+			}
+
 			radar_light.intensity = radarbrightness;
+			Debug.Log(radarpower +" : "+ radarbrightness+" : "+inputJump);
+
+
+
+
+
 
 			if(inputVert > 0){
 				rearthruster_jet.Emit(1);
@@ -232,37 +256,6 @@ public class StarThirdPersonController : MonoBehaviour
 		inputHorz = Input.GetAxis ("Horizontal");
 		inputJump = Input.GetAxis ("Jump");
 
-		if(radarpower > 5)
-		{
-			radar_brightness_coeficient = 0.75f;
-		}
-		else
-		{
-			radar_brightness_coeficient = (radarpower/5.0f)*0.75f;
-		}
-
-
-		if (radarpower > 0) 
-		{
-			radarbrightness = inputJump*radar_brightness_coeficient;
-		}
-		else
-		{
-			radarbrightness = 0; 
-		}
-		radarpower -= radarbrightness*2;
-		radarpower += 0.2f;
-
-
-		if (radarpower > radarpowerMax) 
-		{
-			radarpower = radarpowerMax;
-		}
-		else if(radarpower < 0) 
-		{
-			radarpower = 0;
-		}
-
 		//print (radarpower +" : "+ radarbrightness);
 		if (Input.GetKeyDown (KeyCode.X))
 		{
@@ -272,6 +265,11 @@ public class StarThirdPersonController : MonoBehaviour
 		rigidbody.AddRelativeTorque (0, 0, inputHorz * -turnForce * Time.deltaTime);
 		rigidbody.AddRelativeForce (0, inputVert * thrustForce * Time.deltaTime, 0);
 
+		misslecooldown -= 1;
+		if (misslecooldown < 0) 
+		{
+			misslecooldown = 0;
+		}
 		//networkScript.pingPlayerEventForReplication (PlayerEvent.None);
 		
 	}
@@ -350,10 +348,13 @@ public class StarThirdPersonController : MonoBehaviour
 
 	void fireMissleEvent()
 	{
-
-		PhotonNetwork.Instantiate("missileprefab", gameObject.rigidbody.transform.Find("misslespawnpoint").transform.position, gameObject.rigidbody.transform.rotation, 0);	
-		//MissleAI missleAI = missle.GetComponent<MissleAI> ();
-		//missleAI.setInitialSpeed (gameObject.rigidbody.velocity, gameObject.rigidbody.angularVelocity);
+		if (misslecooldown == 0) 
+		{
+			PhotonNetwork.Instantiate ("missileprefab", gameObject.rigidbody.transform.Find ("misslespawnpoint").transform.position, gameObject.rigidbody.transform.rotation, 0);	
+			misslecooldown = 60; 
+			//MissleAI missleAI = missle.GetComponent<MissleAI> ();
+			//missleAI.setInitialSpeed (gameObject.rigidbody.velocity, gameObject.rigidbody.angularVelocity);
+		}
 	}
 
 

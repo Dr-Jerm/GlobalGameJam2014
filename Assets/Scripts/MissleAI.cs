@@ -42,7 +42,7 @@ public class MissleAI : MonoBehaviour {
 	//{
 		ContactPoint contactpoint = col.contacts[0];
 		Instantiate(missleImpact, contactpoint.point, Quaternion.LookRotation(contactpoint.normal));
-		Destroy (gameObject, 0.1f);
+		PhotonNetwork.Destroy(gameObject);
 	}
 
 //	void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
