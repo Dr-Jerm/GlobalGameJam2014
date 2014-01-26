@@ -197,7 +197,6 @@ public class StarThirdPersonController : MonoBehaviour
 	//returns true if damage causes death. 
 	bool takedamage(float _damage)
 	{
-		Debug.Log("Damage:"+_damage+" Health:"+shipHealth);
 		shipHealth += _damage;
 		if (shipHealth > shipHealthMax) 
 		{
@@ -209,6 +208,7 @@ public class StarThirdPersonController : MonoBehaviour
 			deathevent();
 			return true; 
 		} 
+		Debug.Log("Damage:"+_damage+" Health:"+shipHealth);
 		return false; 
 	}
 	
@@ -265,6 +265,8 @@ public class StarThirdPersonController : MonoBehaviour
 
 		rigidbody.AddRelativeTorque (0, 0, inputHorz * -turnForce * Time.deltaTime);
 		rigidbody.AddRelativeForce (0, inputVert * thrustForce * Time.deltaTime, 0);
+
+		networkScript.pingPlayerEventForReplication (PlayerEvent.None);
 		
 	}
 
@@ -278,6 +280,7 @@ public class StarThirdPersonController : MonoBehaviour
 		{
 			respawn();
 		}
+		networkScript.pingPlayerEventForReplication (PlayerEvent.None);
 	}
 	void deathevent()
 	{

@@ -3,7 +3,6 @@ using System.Collections;
 
 public enum PlayerEvent {
 	None  = 0,
-	Fire = 2,
 	Death = 10,
 	Respawn = 11
 }
@@ -104,8 +103,9 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			if(correctplayerevent != playerevent)
 			{
 				playerevent = correctplayerevent;
+				checkedPlayerEvent();
 			}
-			checkedPlayerEvent();
+
 		
         }
     }
