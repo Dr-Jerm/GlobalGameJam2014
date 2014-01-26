@@ -6,6 +6,8 @@ using System;
 
 public class MainMenu : MonoBehaviour {
 	public GameObject sound;
+	public GUISkin MenuSkin;
+	public Rect LoginButtonRect;                // Position of login button
 
 	private Ray ray;
 	private RaycastHit rayCastHit;
@@ -18,27 +20,29 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	void OnGUI()
-	{
-		GUI.Label (new Rect (300, 200, 50, 50), "Login to Facebook");             
-		if (GUI.Button(new Rect(300,200,50,50), ""))
+	{   
+		if (GUI.Button (new Rect (820, 510, 30, 30), "Lo"))
 		{                                                                                                            
 			FB.Login ("email,publish_actions", LoginCallback);                                                        
 		}
-
 		if (FB.IsLoggedIn)                                                   
 		{                                                                    
-			if (GUI.Button (new Rect(360, 200, 50, 50), "Challenge"))
+			if (GUI.Button (new Rect(820, 540, 30, 30), "Ch"))
 			{                                                                
 				onChallengeClicked();                                        
 			}
-			if (GUI.Button (new Rect(420, 200, 50, 50), "Brag"))
+			if (GUI.Button (new Rect(820, 570, 30, 30), "Br"))
 			{
 				onBragClicked();
+			}
+			if (GUI.Button (new Rect(950, 550, 30, 30), "Pu"))
+			{
+				onScorePublishClicked();
 			}
 		}
 	}
 		
-		void Update ()
+	void Update ()
 	{
 		if(Input.GetMouseButtonDown(0))
 		{
@@ -152,5 +156,78 @@ public class MainMenu : MonoBehaviour {
 				FbDebug.Log("Request sent");                                                                                       
 			}                                                                                                                      
 		}                                                                                                                          
-	}    
-}
+	}
+
+	private void onScorePublishClicked()
+	{
+		var query = new Dictionary<string, string>();
+		query["score"] = "5";
+		FB.API("/me/scores", Facebook.HttpMethod.POST, delegate(FBResult r) { FbDebug.Log("Result: " + r.Text); }, query);
+	}
+
+	private void QueryScores()
+	{
+		FB.API("/app/scores?fields=score,user.limit(20)", Facebook.HttpMethod.GET, ScoresCallback);
+	}
+	
+	void ScoresCallback(FBResult result) 
+	{
+		FbDebug.Log("ScoresCallback");
+		/*if (result.Error != null)
+		{
+			FbDebug.Error(result.Error);
+			return;
+		}
+		
+		scores = new List<object>();
+		List<object> scoresList = Util.DeserializeScores(result.Text);
+		
+		foreach(object score in scoresList) 
+		{
+			var entry = (Dictionary<string,object>) score;
+			var user = (Dictionary<string,object>) entry["user"];
+			
+			string userId = (string)user["id"];
+			
+			if (string.Equals(userId,FB.UserId))
+			{
+				// This entry is the current player
+				int playerHighScore = getScoreFromEntry(entry);
+				FbDebug.Log("Local players score on server is " + playerHighScore);
+				if (playerHighScore < GameStateManager.Score)
+				{
+					FbDebug.Log("Locally overriding with just acquired score: " + GameStateManager.Score);
+					playerHighScore = GameStateManager.Score;
+				}
+				
+				entry["score"] = playerHighScore.ToString();
+				GameStateManager.HighScore = playerHighScore;
+			}
+			
+			scores.Add(entry);
+			if (!friendImages.ContainsKey(userId))
+			{
+				// We don't have this players image yet, request it now
+				FB.API(Util.GetPictureURL(userId, 128, 128), Facebook.HttpMethod.GET, pictureResult =>
+				       {
+					if (pictureResult.Error != null)
+					{
+						FbDebug.Error(pictureResult.Error);
+					}
+					else
+					{
+						friendImages.Add(userId, pictureResult.Texture);
+					}
+				});
+			}
+		}
+		
+		// Now sort the entries based on score
+		scores.Sort(delegate(object firstObj,
+		                     object secondObj)
+		            {
+			return -getScoreFromEntry(firstObj).CompareTo(getScoreFromEntry(secondObj));
+		}
+		);*/
+	}
+}	
