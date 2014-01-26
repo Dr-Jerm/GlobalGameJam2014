@@ -12,6 +12,7 @@ public class StarThirdPersonController : MonoBehaviour
 	public bool shipIsDead = false; 
 
 	public GameObject collisionSparks;
+	public GameObject deathExplosion;
 
 	public float inputVert=0;
 	public float inputHorz=0;
@@ -27,8 +28,8 @@ public class StarThirdPersonController : MonoBehaviour
 	Light rightrearthruster_light; 
 	Light rightfrontthruster_light; 
 	
-	float rearthruster_brightness = 2.0f;
-	float frontthruster_brightness = 1.5f;
+	float rearthruster_brightness = 1f;
+	float frontthruster_brightness = 1f;
 	float turningthruster_brightness = .5f;
 
 
@@ -214,15 +215,16 @@ public class StarThirdPersonController : MonoBehaviour
 		else if (shipHealth < 0) 
 		{
 			shipHealth = 0;
-			shipIsDead = true;
-			Debug.Log("You Died");
+			deathevent();
 			return true; 
 		} 
 		return false; 
 	}
 	
 	void deathevent(){
-		
+		Instantiate(deathExplosion, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
+		shipIsDead = true;
+		Debug.Log("You Died");
 	}
 	
 	//    private Vector3 lastPos;
