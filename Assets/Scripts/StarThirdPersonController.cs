@@ -306,6 +306,12 @@ public class StarThirdPersonController : MonoBehaviour
 		meshcollider.enabled = false;
 
 	}
+	public void fixVisible()
+	{
+		meshRender.enabled = true;
+		meshcollider.enabled = true;
+	}
+
 
 	void respawn()
 	{
