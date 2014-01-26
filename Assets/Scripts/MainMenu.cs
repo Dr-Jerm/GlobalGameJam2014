@@ -21,21 +21,21 @@ public class MainMenu : MonoBehaviour {
 
 	void OnGUI()
 	{   
-		if (GUI.Button (new Rect (820, 510, 30, 30), "Lo"))
+		if (GUI.Button (new Rect (460, 260, 20, 20), "Lo"))
 		{                                                                                                            
 			FB.Login ("email,publish_actions", LoginCallback);                                                        
 		}
 		if (FB.IsLoggedIn)                                                   
 		{                                                                    
-			if (GUI.Button (new Rect(820, 540, 30, 30), "Ch"))
+			if (GUI.Button (new Rect(460, 280, 20, 20), "Ch"))
 			{                                                                
 				onChallengeClicked();                                        
 			}
-			if (GUI.Button (new Rect(820, 570, 30, 30), "Br"))
+			if (GUI.Button (new Rect(460, 300, 20, 20), "Br"))
 			{
 				onBragClicked();
 			}
-			if (GUI.Button (new Rect(950, 550, 30, 30), "Pu"))
+			if (GUI.Button (new Rect(530, 280, 20, 20), "Pu"))
 			{
 				onScorePublishClicked();
 			}
