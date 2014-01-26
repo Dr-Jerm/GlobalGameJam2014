@@ -50,19 +50,19 @@ public class StarLogic : MonoBehaviour
 //        Debug.Log("TaggedPlayer: " + playerID);
 //    }
 
-    public void OnPhotonPlayerDisconnected(PhotonPlayer player)
-    {
-        Debug.Log("OnPhotonPlayerDisconnected: " + player);
-
+//    public void OnPhotonPlayerDisconnected(PhotonPlayer player)
+//    {
+//        Debug.Log("OnPhotonPlayerDisconnected: " + player);
+//
 //        if (PhotonNetwork.isMasterClient)
 //        {
 //            if (player.ID == playerWhoIsIt)
 //            {
 //                // if the player who left was "it", the "master" is the new "it"
-////                TagPlayer(PhotonNetwork.player.ID);
+//                //TagPlayer(PhotonNetwork.player.ID);
 //            }
 //        }
-    }
+//    }
 
     public void OnMasterClientSwitched()
     {

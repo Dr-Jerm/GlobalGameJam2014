@@ -52,7 +52,7 @@ public class StarThirdPersonController : MonoBehaviour
 	float rearthruster_brightness = 1f;
 	float frontthruster_brightness = 1f;
 	float turningthruster_brightness = 0.5f;
-	float radar_brightness_coeficient = 1f;
+	float radar_brightness_coeficient = 1.5f;
 	float radarpower = 1.0f; 
 	float radarpowerMax = 1.0f; 
 	float radarbrightness;
@@ -166,7 +166,7 @@ public class StarThirdPersonController : MonoBehaviour
 			}
 
 			radar_light.intensity = radarbrightness;
-			Debug.Log(radarpower +" : "+ radarbrightness+" : "+inputJump);
+			//Debug.Log(radarpower +" : "+ radarbrightness+" : "+inputJump);
 
 
 
@@ -290,8 +290,10 @@ public class StarThirdPersonController : MonoBehaviour
 	void deathevent()
 	{
 		//print("You Died");
-
+		shipIsDead = true;
+		spawntimer = spawntimermax; 
 		myPhotonView.RPC("replicatedeathevent", PhotonTargets.All);
+		replicatedeathevent ();
 
 		rigidbody.AddRelativeTorque (rigidbody.angularVelocity*5);
 		rigidbody.AddRelativeForce (rigidbody.velocity*5);
@@ -300,8 +302,7 @@ public class StarThirdPersonController : MonoBehaviour
 //		meshRender.enabled = false;
 //		meshcollider.enabled = false;
 
-		shipIsDead = true;
-		spawntimer = spawntimermax; 
+
 		//networkScript.pingPlayerEventForReplication (PlayerEvent.Death);
 
 		
@@ -316,18 +317,21 @@ public class StarThirdPersonController : MonoBehaviour
 		meshcollider.enabled = false;
 
 	}
-//	public void fixVisible()
-//	{
-//		Debug.Log("VIX VIS");
-//		meshRender.enabled = true;
-//
-//		meshcollider.enabled = true;
-//	}
+
+	[RPC]
+	public void fixVisible()
+	{
+		Debug.Log("VIX VIS");
+		meshRender.enabled = true;
+
+		meshcollider.enabled = true;
+	}
 
 
 	void respawn()
 	{
 		myPhotonView.RPC("replicaterespawn", PhotonTargets.All);
+		replicaterespawn ();
 //		meshRender.enabled = true;
 //		meshcollider.enabled = true;
 //		Instantiate(respawnSparks, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
@@ -350,6 +354,7 @@ public class StarThirdPersonController : MonoBehaviour
 	{
 		if (misslecooldown == 0) 
 		{
+			myPhotonView.RPC("fixVisible", PhotonTargets.All);
 			PhotonNetwork.Instantiate ("missileprefab", gameObject.rigidbody.transform.Find ("misslespawnpoint").transform.position, gameObject.rigidbody.transform.rotation, 0);	
 			misslecooldown = 60; 
 			//MissleAI missleAI = missle.GetComponent<MissleAI> ();
