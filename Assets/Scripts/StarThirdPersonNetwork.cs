@@ -6,6 +6,8 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
     StarThirdPersonCamera cameraScript;
     StarThirdPersonController controllerScript;
 
+
+
 	private Vector3 correctPlayerPos = Vector3.zero; //We lerp towards this
 	private Quaternion correctPlayerRot = Quaternion.identity; //We lerp towards this
 	private Vector3 correctPlayerAngularVelocity = Vector3.zero; //We lerp towards this
@@ -41,7 +43,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 
     void OnPhotonSerializeView(PhotonStream stream, PhotonMessageInfo info)
     {
-		Debug.Log("MyID:"+gameObject.name+" SerializeView");
+		//Debug.Log("MyID:"+gameObject.name+" SerializeView");
 
 		if (stream.isWriting)
         {
