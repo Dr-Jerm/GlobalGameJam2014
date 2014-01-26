@@ -116,18 +116,18 @@ public class StarThirdPersonController : MonoBehaviour
 		if(col.gameObject.tag == "asteroid")
 		{
 			ContactPoint contactpoint = col.contacts[0];
-			Vector3 impactvel = col.gameObject.rigidbody.GetRelativePointVelocity(contactpoint.point);
+
 			
 			// object collided with something called "Ground":
 			// do whatever you want: set a new direction, set a boolean variable, etc.
 			//Debug.Log("Collision Asteroid!!!"+impactvel.magnitude);
-			takedamage(impactvel.magnitude*-2);
+			takedamage(-23);
 			Instantiate(collisionSparks, contactpoint.point, Quaternion.LookRotation(contactpoint.normal));
 			
 		}
 		if (col.gameObject.tag == "missle") 
 		{
-			takedamage(-100);
+			takedamage(-72);
 		}
 	}
 
