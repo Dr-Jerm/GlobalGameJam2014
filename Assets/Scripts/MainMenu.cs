@@ -30,17 +30,17 @@ public class MainMenu : MonoBehaviour {
 				if(rayCastHit.transform.name == "helpButton")
 				{
 					sound.audio.Play();
-					Camera.main.transform.position = new Vector3(0.636013f, 20f, 1.525784f);
+					Camera.main.transform.position = new Vector3(0f, 20f, 1.8f);
 				}
 				if(rayCastHit.transform.name == "creditsButton")
 				{
 					sound.audio.Play();
-					Camera.main.transform.position = new Vector3(0.636013f, -20f, 1.525784f);
+					Camera.main.transform.position = new Vector3(0f, -20f, 1.8f);
 				}
 				if(rayCastHit.transform.name == "backButton1" || rayCastHit.transform.name == "backButton2")
 				{
 					sound.audio.Play();
-					Camera.main.transform.position = new Vector3(0.636013f, 0f, 1.525784f);
+					Camera.main.transform.position = new Vector3(0f, 0f, 1.8f);
 				}
 			}
 		}
