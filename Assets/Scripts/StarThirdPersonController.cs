@@ -105,7 +105,7 @@ public class StarThirdPersonController : MonoBehaviour
 
 	void OnCollisionEnter(Collision col)
 	{
-		//Debug.Log("Collision!");
+		Debug.Log("Collision!");
 		//if (col.gameObject.tag == "asteroid")
 		if(col.gameObject.tag == "asteroid")
 		{
@@ -121,7 +121,7 @@ public class StarThirdPersonController : MonoBehaviour
 		}
 		if (col.gameObject.tag == "missle") 
 		{
-			takedamage(100);
+			takedamage(-100);
 		}
 	}
 
