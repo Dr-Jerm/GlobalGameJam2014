@@ -10,7 +10,8 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 	private Quaternion correctPlayerRot = Quaternion.identity; //We lerp towards this
 	private Vector3 correctPlayerAngularVelocity = Vector3.zero; //We lerp towards this
 	private Vector3 correctPlayerVelocity = Vector3.zero;
-
+	private float 	correctPlayerInputHorz = 0;
+	private float 	correctPlayerInputVert = 0;
 
     void Awake()
     {
@@ -50,6 +51,8 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			stream.SendNext(gameObject.rigidbody.transform.rotation); 
 			stream.SendNext(gameObject.rigidbody.angularVelocity);
 			stream.SendNext(gameObject.rigidbody.velocity);
+			stream.SendNext(controllerScript.inputHorz);
+			stream.SendNext(controllerScript.inputVert);
         }
         else
         {
@@ -59,6 +62,9 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
             correctPlayerRot = (Quaternion)stream.ReceiveNext();
 			correctPlayerAngularVelocity = (Vector3)stream.ReceiveNext();
 			correctPlayerVelocity = (Vector3)stream.ReceiveNext();
+			correctPlayerInputHorz = (float)stream.ReceiveNext();
+			correctPlayerInputVert = (float)stream.ReceiveNext();
+
         }
     }
 
@@ -74,6 +80,8 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			gameObject.rigidbody.transform.rotation = Quaternion.Lerp(gameObject.rigidbody.transform.rotation, correctPlayerRot, Time.deltaTime * 5);
 			gameObject.rigidbody.angularVelocity = Vector3.Lerp(gameObject.rigidbody.angularVelocity, correctPlayerAngularVelocity, Time.deltaTime * 5);
 			gameObject.rigidbody.velocity = Vector3.Lerp(gameObject.rigidbody.velocity, correctPlayerVelocity, Time.deltaTime * 5);
+			controllerScript.inputHorz = correctPlayerInputHorz;
+			controllerScript.inputVert = correctPlayerInputVert;
         }
     }
 
