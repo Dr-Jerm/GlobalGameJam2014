@@ -1,5 +1,8 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System.Collections.Generic;
+using Facebook.MiniJSON;
+using System;
 
 public class MainMenu : MonoBehaviour {
 	public GameObject sound;
@@ -21,6 +24,14 @@ public class MainMenu : MonoBehaviour {
 		{                                                                                                            
 			FB.Login ("email,publish_actions", LoginCallback);                                                        
 		}
+
+		if (FB.IsLoggedIn)                                                   
+		{                                                                    
+			if (GUI.Button (new Rect(360, 200, 50, 50), "Challenge"))
+			{                                                                
+				onChallengeClicked();                                        
+			}                                                                
+		}  
 	}
 		
 		void Update ()
@@ -60,7 +71,7 @@ public class MainMenu : MonoBehaviour {
 	{                                                                                            
 		FbDebug.Log("SetInit");                                                                  
 		enabled = true; // "enabled" is a property inherited from MonoBehaviour                  
-		if (!FB.IsLoggedIn)                                                                       
+		if (FB.IsLoggedIn)                                                                       
 		{                                                                                        
 			FbDebug.Log("Already logged in");                                                    
 			OnLoggedIn();                                                                        
@@ -86,7 +97,7 @@ public class MainMenu : MonoBehaviour {
 	{                                                                                          
 		FbDebug.Log("LoginCallback");                                                          
 		
-		if (!FB.IsLoggedIn)                                                                     
+		if (FB.IsLoggedIn)                                                                     
 		{                                                                                      
 			OnLoggedIn();                                                                      
 		}                                                                                      
@@ -95,5 +106,34 @@ public class MainMenu : MonoBehaviour {
 	void OnLoggedIn()                                                                          
 	{                                                                                          
 		FbDebug.Log("Logged in. ID: " + FB.UserId);                                            
-	}                     
+	}  
+
+	private void onChallengeClicked()                                                                                              
+	{ 
+		FB.AppRequest(                                                                                                         
+		              message: "Space rocks dark! Check it out.",                                                                
+		              title: "Play dark space rocks with me!",                                                                               
+		              callback:appRequestCallback                                                                                        
+		              );                                                                                                                 
+		
+	}                                                                                                                              
+	private void appRequestCallback (FBResult result)                                                                              
+	{                                                                                                                              
+		FbDebug.Log("appRequestCallback");                                                                                         
+		if (result != null)                                                                                                        
+		{                                                                                                                          
+			var responseObject = Json.Deserialize(result.Text) as Dictionary<string, object>;                                      
+			object obj = 0;                                                                                                        
+			if (responseObject.TryGetValue ("cancelled", out obj))                                                                 
+			{                                                                                                                      
+				FbDebug.Log("Request cancelled");                                                                                  
+			}                                                                                                                      
+			else if (responseObject.TryGetValue ("request", out obj))                                                              
+			{                                                                                                                      
+				// Record that we went sent a request so we can display a message                                                  
+				//lastChallengeSentTime = Time.realtimeSinceStartup;                                                                 
+				FbDebug.Log("Request sent");                                                                                       
+			}                                                                                                                      
+		}                                                                                                                          
+	}    
 }
