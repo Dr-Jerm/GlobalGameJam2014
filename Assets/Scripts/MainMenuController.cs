@@ -43,7 +43,7 @@ public class MainMenuController : MonoBehaviour {
 	}
 
 	Rect scaleRect(Rect o, float scale) {
-		return new Rect(o.x/scale, o.y*scale, o.width*scale, o.height*scale);
+		return new Rect(o.x/scale, o.y/scale, o.width*scale, o.height*scale);
 	}
 
 	Rect drawButtonPanel(int screenWidth, int screenHeight) {
@@ -70,8 +70,6 @@ public class MainMenuController : MonoBehaviour {
 
 		float newHeight = screenHeight;
 		float newWidth = (float)imgWidth*((float)screenHeight/(float)imgHeight);
-
-		Debug.Log (imgWidth + "*" + screenHeight + "/" + imgHeight + "=" + newWidth);
 
 		int xPos = (int)(screenWidth/2) -(int)(newWidth/2);
 		int yPos = 0;
