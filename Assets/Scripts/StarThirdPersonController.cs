@@ -272,7 +272,7 @@ public class StarThirdPersonController : MonoBehaviour
 		rigidbody.AddRelativeTorque (0, 0, inputHorz * -turnForce * Time.deltaTime);
 		rigidbody.AddRelativeForce (0, inputVert * thrustForce * Time.deltaTime, 0);
 
-		networkScript.pingPlayerEventForReplication (PlayerEvent.None);
+		//networkScript.pingPlayerEventForReplication (PlayerEvent.None);
 		
 	}
 
@@ -286,7 +286,7 @@ public class StarThirdPersonController : MonoBehaviour
 		{
 			respawn();
 		}
-		networkScript.pingPlayerEventForReplication (PlayerEvent.None);
+		//networkScript.pingPlayerEventForReplication (PlayerEvent.None);
 	}
 
 	void deathevent()
