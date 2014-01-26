@@ -38,7 +38,7 @@ public class MainMenuController : MonoBehaviour {
 		Rect scaledRect = scaleRect(buttonRect, this.scale);
 
 		if (GUI.Button (scaledRect, "Start")) {
-			print ("You clicked the button!");
+			Application.LoadLevel ("game"); ;
 		}
 	}
 
