@@ -18,10 +18,6 @@ public class MainMenu : MonoBehaviour {
 		enabled = false;                  
 		FB.Init(SetInit, OnHideUnity);  
 	}
-
-	void OnGUI()
-	{
-	}
 		
 	void Update ()
 	{
