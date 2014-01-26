@@ -5,7 +5,7 @@ using System.Collections.Generic;
 public class AsteroidManager : MonoBehaviour {
 
   // Use this for initialization
-  public GameObject asteroidPrefab;
+  public List<GameObject> asteroidPrefabs;
 
   private Dictionary<int, Asteroid> asteroids;
 
@@ -28,7 +28,7 @@ public class AsteroidManager : MonoBehaviour {
   }
 
   void spawnRandomAsteroid (int id) {
-    GameObject newInstance = Instantiate(asteroidPrefab) as GameObject;
+    GameObject newInstance = Instantiate(asteroidPrefabs[(int)Random.Range(1, asteroidPrefabs.Count)]) as GameObject;
 
     Asteroid a = newInstance.GetComponent(typeof(Asteroid)) as Asteroid;
     a.init(id, new Vector2(Random.Range(-15.0F, 15.0F), Random.Range(-15.0F, 15.0F)), new Vector2(Random.Range(-1.0F, 1.0F), Random.Range(-1.0F, 1.0F)));
