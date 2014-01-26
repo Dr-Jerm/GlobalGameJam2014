@@ -8,6 +8,8 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 
 	private Vector3 correctPlayerPos = Vector3.zero; //We lerp towards this
 	private Quaternion correctPlayerRot = Quaternion.identity; //We lerp towards this
+	private Vector3 correctPlayerAngularVelocity = Vector3.zero; //We lerp towards this
+	private Vector3 correctPlayerVelocity = Vector3.zero;
 
 
     void Awake()
@@ -43,29 +45,35 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 		if (stream.isWriting)
         {
             //We own this player: send the others our data
-			stream.SendNext((int)controllerScript._shipState);
+			//stream.SendNext((int)controllerScript._shipState);
 			stream.SendNext(gameObject.rigidbody.transform.position);
 			stream.SendNext(gameObject.rigidbody.transform.rotation); 
+			stream.SendNext(gameObject.rigidbody.angularVelocity);
+			stream.SendNext(gameObject.rigidbody.velocity);
         }
         else
         {
             //Network player, receive data
-			controllerScript._shipState = (ShipState)(int)stream.ReceiveNext();
+			//controllerScript._shipState = (ShipState)(int)stream.ReceiveNext();
             correctPlayerPos = (Vector3)stream.ReceiveNext();
             correctPlayerRot = (Quaternion)stream.ReceiveNext();
-
+			correctPlayerAngularVelocity = (Vector3)stream.ReceiveNext();
+			correctPlayerVelocity = (Vector3)stream.ReceiveNext();
         }
     }
 
    
     void Update()
     {
-        if (!photonView.isMine)
+		//Debug.Log("MyID:"+gameObject.name);
+		if (!photonView.isMine)
         {
-            
+			//Debug.Log("MyID:"+gameObject.name+" Replicating");
 			//Update remote player (smooth this, this looks good, at the cost of some accuracy)
-            gameObject.rigidbody.transform.position = Vector3.Lerp(transform.position, correctPlayerPos, Time.deltaTime * 5);
-			gameObject.rigidbody.transform.rotation = Quaternion.Lerp(transform.rotation, correctPlayerRot, Time.deltaTime * 5);
+			gameObject.rigidbody.transform.position = Vector3.Lerp(gameObject.rigidbody.transform.position, correctPlayerPos, Time.deltaTime * 5);
+			gameObject.rigidbody.transform.rotation = Quaternion.Lerp(gameObject.rigidbody.transform.rotation, correctPlayerRot, Time.deltaTime * 5);
+			gameObject.rigidbody.angularVelocity = Vector3.Lerp(gameObject.rigidbody.angularVelocity, correctPlayerAngularVelocity, Time.deltaTime * 5);
+			gameObject.rigidbody.velocity = Vector3.Lerp(gameObject.rigidbody.velocity, correctPlayerVelocity, Time.deltaTime * 5);
         }
     }
 
