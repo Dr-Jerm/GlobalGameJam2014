@@ -105,7 +105,7 @@ public class StarThirdPersonController : MonoBehaviour
 
 	void OnCollisionEnter(Collision col)
 	{
-		Debug.Log("Collision!");
+		//Debug.Log("Collision!");
 		//if (col.gameObject.tag == "asteroid")
 		if(col.gameObject.tag == "asteroid")
 		{
@@ -114,7 +114,7 @@ public class StarThirdPersonController : MonoBehaviour
 			
 			// object collided with something called "Ground":
 			// do whatever you want: set a new direction, set a boolean variable, etc.
-			Debug.Log("Collision Asteroid!!!"+impactvel.magnitude);
+			//Debug.Log("Collision Asteroid!!!"+impactvel.magnitude);
 			takedamage(impactvel.magnitude*-2);
 			Instantiate(collisionSparks, contactpoint.point, Quaternion.LookRotation(contactpoint.normal));
 			
@@ -275,7 +275,7 @@ public class StarThirdPersonController : MonoBehaviour
 		inputVert = 0;
 		inputHorz = 0;
 		spawntimer -= 2*Time.deltaTime;
-		Debug.Log ("updateDead" + spawntimer);
+		//Debug.Log ("updateDead" + spawntimer);
 		if(spawntimer <= 0)
 		{
 			respawn();
@@ -284,7 +284,7 @@ public class StarThirdPersonController : MonoBehaviour
 	}
 	void deathevent()
 	{
-		print("You Died");
+		//print("You Died");
 		Instantiate(deathExplosion, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
 
 		rigidbody.AddRelativeTorque (rigidbody.angularVelocity*5);
@@ -300,7 +300,7 @@ public class StarThirdPersonController : MonoBehaviour
 	}
 	public void replicatedeathevent()
 	{
-		print("MyID:"+gameObject.name+" DIED!");
+		//print("MyID:"+gameObject.name+" DIED!");
 		Instantiate(deathExplosion, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
 		meshRender.enabled = false;
 		meshcollider.enabled = false;
@@ -308,7 +308,9 @@ public class StarThirdPersonController : MonoBehaviour
 	}
 	public void fixVisible()
 	{
+		Debug.Log("VIX VIS");
 		meshRender.enabled = true;
+
 		meshcollider.enabled = true;
 	}
 
@@ -329,7 +331,7 @@ public class StarThirdPersonController : MonoBehaviour
 	{
 		meshRender.enabled = true;
 		meshcollider.enabled = true;
-		print ("replication respawn");
+		//print ("replication respawn");
 		Instantiate(respawnSparks, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
 	}
 
