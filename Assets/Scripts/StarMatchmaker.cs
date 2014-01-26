@@ -3,6 +3,7 @@ using UnityEngine;
 public class StarMatchmaker : Photon.MonoBehaviour
 {
     private PhotonView myPhotonView;
+    private AsteroidManager asteroidManager;
 	public GameObject sound_start;
     // Use this for initialization
     void Start()
@@ -19,6 +20,7 @@ public class StarMatchmaker : Photon.MonoBehaviour
     void OnPhotonRandomJoinFailed()
     {
         PhotonNetwork.CreateRoom(null);
+        Debug.Log("CreateRoom");
     }
 
     void OnJoinedRoom()
@@ -29,6 +31,8 @@ public class StarMatchmaker : Photon.MonoBehaviour
         myPhotonView = spaceship.GetComponent<PhotonView>();
 		//Camera.main.GetComponent<CamControl>()._target = GameObject.FindGameObjectWithTag ("ship").transform;
         //sound_start.audio.Play();
+        asteroidManager = gameObject.GetComponent<AsteroidManager>();
+        //asteroidManager.newAsteroids();
     }
 
     void OnGUI()

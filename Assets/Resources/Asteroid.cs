@@ -19,7 +19,7 @@ public class Asteroid : MonoBehaviour {
     //this.asteroidRigidBody.useGravity = false;
     this.asteroidRigidBody = gameObject.GetComponent<Rigidbody>();
 
-    this.asteroidRigidBody.position = new Vector3(this.pos.x, this.pos.y);
+    this.asteroidRigidBody.position = new Vector3(Random.Range(-55.0F,55.0F), Random.Range(-55.0F,55.0F));
     this.asteroidRigidBody.velocity = new Vector3(this.vel.x, this.vel.y);
   }
   
