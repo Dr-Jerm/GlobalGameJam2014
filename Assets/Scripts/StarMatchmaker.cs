@@ -4,7 +4,6 @@ public class StarMatchmaker : Photon.MonoBehaviour
 {
     private PhotonView myPhotonView;
     private AsteroidManager asteroidManager;
-	public GameObject sound_start;
     // Use this for initialization
     void Start()
     {
@@ -28,10 +27,7 @@ public class StarMatchmaker : Photon.MonoBehaviour
     {
 
         GameObject spaceship = PhotonNetwork.Instantiate("spaceship", Vector3.zero, Quaternion.identity, 0);
-        //spaceship.GetComponent<myThirdPersonController>().isControllable = true;
         myPhotonView = spaceship.GetComponent<PhotonView>();
-		//Camera.main.GetComponent<CamControl>()._target = GameObject.FindGameObjectWithTag ("ship").transform;
-        //sound_start.audio.Play();
 
 		if (PhotonNetwork.isMasterClient)
 		{
