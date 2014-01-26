@@ -10,11 +10,20 @@ public class MainMenu : MonoBehaviour {
 	void Awake()
 	{
 		// Initialize FB SDK              
-		enabled = false;
+		enabled = false;                  
 		FB.Init(SetInit, OnHideUnity);  
 	}
-	
-	void Update ()
+
+	void OnGUI()
+	{
+		GUI.Label (new Rect (300, 200, 50, 50), "Login to Facebook");             
+		if (GUI.Button(new Rect(300,200,50,50), ""))
+		{                                                                                                            
+			FB.Login ("email,publish_actions", LoginCallback);                                                        
+		}
+	}
+		
+		void Update ()
 	{
 		if(Input.GetMouseButtonDown(0))
 		{
@@ -51,13 +60,13 @@ public class MainMenu : MonoBehaviour {
 	{                                                                                            
 		FbDebug.Log("SetInit");                                                                  
 		enabled = true; // "enabled" is a property inherited from MonoBehaviour                  
-		if (FB.IsLoggedIn)                                                                       
+		if (!FB.IsLoggedIn)                                                                       
 		{                                                                                        
 			FbDebug.Log("Already logged in");                                                    
-			//OnLoggedIn();                                                                        
+			OnLoggedIn();                                                                        
 		}                                                                                        
 	}                                                                                            
-
+	
 	private void OnHideUnity(bool isGameShown)                                                   
 	{                                                                                            
 		FbDebug.Log("OnHideUnity");                                                              
@@ -72,4 +81,19 @@ public class MainMenu : MonoBehaviour {
 			Time.timeScale = 1;                                                                  
 		}                                                                                        
 	}
+
+	void LoginCallback(FBResult result)                                                        
+	{                                                                                          
+		FbDebug.Log("LoginCallback");                                                          
+		
+		if (!FB.IsLoggedIn)                                                                     
+		{                                                                                      
+			OnLoggedIn();                                                                      
+		}                                                                                      
+	}                                                                                          
+	
+	void OnLoggedIn()                                                                          
+	{                                                                                          
+		FbDebug.Log("Logged in. ID: " + FB.UserId);                                            
+	}                     
 }
