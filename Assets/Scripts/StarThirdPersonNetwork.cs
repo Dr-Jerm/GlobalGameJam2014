@@ -24,6 +24,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 	private float 	correctPlayerInputHorz = 0;
 	private float 	correctPlayerInputVert = 0;
 	private float 	correctPlayerInputJump = 0;
+	private PlayerEvent correctplayerevent = PlayerEvent.None;
 	
     void Awake()
     {
@@ -80,7 +81,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			correctPlayerInputHorz = (float)stream.ReceiveNext();
 			correctPlayerInputVert = (float)stream.ReceiveNext();
 			correctPlayerInputJump = (float)stream.ReceiveNext();
-			playerevent = (PlayerEvent)stream.ReceiveNext();
+			correctplayerevent = (PlayerEvent)stream.ReceiveNext();
 
         }
     }
@@ -100,7 +101,10 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			controllerScript.inputHorz = correctPlayerInputHorz;
 			controllerScript.inputVert = correctPlayerInputVert;
 			controllerScript.inputJump = correctPlayerInputJump;
-
+			if(correctplayerevent != playerevent)
+			{
+				playerevent = correctplayerevent;
+			}
 			checkedPlayerEvent();
 		
         }
@@ -118,14 +122,16 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 	{
 		if (playerevent == PlayerEvent.Death) 
 		{
+
 			controllerScript.replicatedeathevent();
-			playerevent = PlayerEvent.None;
+
 		}
 		if (playerevent == PlayerEvent.Respawn) 
 		{
 			controllerScript.replicaterespawn();
-			playerevent = PlayerEvent.None;
+
 		}
+		playerevent = PlayerEvent.None;
 
 
 	}
