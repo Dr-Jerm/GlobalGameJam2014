@@ -6,8 +6,6 @@ using System;
 
 public class MainMenu : MonoBehaviour {
 	public GameObject sound;
-	public GUISkin MenuSkin;
-	public Rect LoginButtonRect;                // Position of login button
 
 	private Ray ray;
 	private RaycastHit rayCastHit;
