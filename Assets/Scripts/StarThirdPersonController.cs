@@ -7,6 +7,7 @@ public class StarThirdPersonController : MonoBehaviour
 {
 
 	StarThirdPersonNetwork networkScript;
+
 	public float shipHealth = 100; 
 	public float shipHealthMax = 100;
 
@@ -14,6 +15,7 @@ public class StarThirdPersonController : MonoBehaviour
 
 	public GameObject collisionSparks;
 	public GameObject deathExplosion;
+	public GameObject respawnSparks;
 
 	public float inputVert=0;
 	public float inputHorz=0;
@@ -147,15 +149,7 @@ public class StarThirdPersonController : MonoBehaviour
 		return false; 
 	}
 	
-	void deathevent(){
-		Instantiate(deathExplosion, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
-		shipIsDead = true;
-		Debug.Log("You Died");
-		meshRender.enabled = false;
-		meshcollider.enabled = false;
-		spawntimer = spawntimermax; 
 
-	}
 
     void OnControllerColliderHit(ControllerColliderHit hit)
     {
@@ -184,18 +178,46 @@ public class StarThirdPersonController : MonoBehaviour
 			respawn();
 		}
 	}
-
-
-	void respawn()
+	void deathevent()
 	{
-		shipIsDead = false;
-		meshRender.enabled = true;
-		meshcollider.enabled = true;
-		shipHealth = shipHealthMax; 
+		print("You Died");
+		Instantiate(deathExplosion, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
+		meshRender.enabled = false;
+		meshcollider.enabled = false;
+
+		shipIsDead = true;
+		spawntimer = spawntimermax; 
+		networkScript.pingPlayerEventForReplication (PlayerEvent.Death);
+		
+	}
+	public void replicatedeathevent()
+	{
+		print("MyID:"+gameObject.name+" DIED!");
+		Instantiate(deathExplosion, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
+		meshRender.enabled = false;
+		meshcollider.enabled = false;
 
 	}
 
+	void respawn()
+	{
+		meshRender.enabled = true;
+		meshcollider.enabled = true;
+		Instantiate(respawnSparks, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
 
+		shipIsDead = false;
+		shipHealth = shipHealthMax; 
+		networkScript.pingPlayerEventForReplication (PlayerEvent.Respawn);
+	}
+
+
+	public void replicaterespawn()
+	{
+		meshRender.enabled = true;
+		meshcollider.enabled = true;
+		Instantiate(respawnSparks, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
+	}
+	
     public void Reset()
     {
         gameObject.tag = "Player";

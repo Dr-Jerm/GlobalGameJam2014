@@ -1,11 +1,20 @@
 using UnityEngine;
 using System.Collections;
 
+public enum PlayerEvent {
+	None  = 0,
+	Fire = 2,
+	Death = 10,
+	Respawn = 11
+}
+
+
 public class StarThirdPersonNetwork : Photon.MonoBehaviour
 {
     StarThirdPersonCamera cameraScript;
     StarThirdPersonController controllerScript;
 
+	private PlayerEvent playerevent = PlayerEvent.None;
 
 
 	private Vector3 correctPlayerPos = Vector3.zero; //We lerp towards this
@@ -55,6 +64,8 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			stream.SendNext(gameObject.rigidbody.velocity);
 			stream.SendNext(controllerScript.inputHorz);
 			stream.SendNext(controllerScript.inputVert);
+			stream.SendNext(playerevent);
+
         }
         else
         {
@@ -66,6 +77,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			correctPlayerVelocity = (Vector3)stream.ReceiveNext();
 			correctPlayerInputHorz = (float)stream.ReceiveNext();
 			correctPlayerInputVert = (float)stream.ReceiveNext();
+			playerevent = (PlayerEvent)(float)stream.ReceiveNext();
 
         }
     }
@@ -84,7 +96,34 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			gameObject.rigidbody.velocity = Vector3.Lerp(gameObject.rigidbody.velocity, correctPlayerVelocity, Time.deltaTime * 5);
 			controllerScript.inputHorz = correctPlayerInputHorz;
 			controllerScript.inputVert = correctPlayerInputVert;
+
+			checkedPlayerEvent();
+		
         }
     }
+
+	//called by StarThirdPersonController
+	public void pingPlayerEventForReplication(PlayerEvent _playerEvent)
+	{
+		playerevent = _playerEvent;
+
+	}
+
+
+	void checkedPlayerEvent()
+	{
+		if (playerevent == PlayerEvent.Death) 
+		{
+			controllerScript.replicatedeathevent();
+			playerevent = PlayerEvent.None;
+		}
+		if (playerevent == PlayerEvent.Respawn) 
+		{
+			controllerScript.replicaterespawn();
+			playerevent = PlayerEvent.None;
+		}
+
+
+	}
 
 }
