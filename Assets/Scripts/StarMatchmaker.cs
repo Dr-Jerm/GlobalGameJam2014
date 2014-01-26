@@ -21,6 +21,7 @@ public class StarMatchmaker : Photon.MonoBehaviour
     {
         PhotonNetwork.CreateRoom(null);
         Debug.Log("CreateRoom");
+        
     }
 
     void OnJoinedRoom()
@@ -31,8 +32,12 @@ public class StarMatchmaker : Photon.MonoBehaviour
         myPhotonView = spaceship.GetComponent<PhotonView>();
 		//Camera.main.GetComponent<CamControl>()._target = GameObject.FindGameObjectWithTag ("ship").transform;
         //sound_start.audio.Play();
-        asteroidManager = gameObject.GetComponent<AsteroidManager>();
-        //asteroidManager.newAsteroids();
+
+		if (PhotonNetwork.isMasterClient)
+		{
+			asteroidManager = gameObject.GetComponent<AsteroidManager>();
+			asteroidManager.newAsteroids();
+		}
     }
 
     void OnGUI()
