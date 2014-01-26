@@ -119,6 +119,10 @@ public class StarThirdPersonController : MonoBehaviour
 			Instantiate(collisionSparks, contactpoint.point, Quaternion.LookRotation(contactpoint.normal));
 			
 		}
+		if (col.gameObject.tag == "missle") 
+		{
+			takedamage(100);
+		}
 	}
 
 	void updateThrusterLigthts()
