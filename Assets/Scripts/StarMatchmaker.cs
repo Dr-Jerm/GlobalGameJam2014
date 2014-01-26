@@ -32,7 +32,7 @@ public class StarMatchmaker : Photon.MonoBehaviour
 		if (PhotonNetwork.isMasterClient)
 		{
 			asteroidManager = gameObject.GetComponent<AsteroidManager>();
-			asteroidManager.newAsteroids();
+			//asteroidManager.newAsteroids();
 		}
     }
 
