@@ -17,6 +17,8 @@ public class StarThirdPersonController : MonoBehaviour
 	public GameObject deathExplosion;
 	public GameObject respawnSparks;
 
+	public GameObject missle;
+
 	public float inputVert=0;
 	public float inputHorz=0;
 	public float inputJump=0;
@@ -163,11 +165,6 @@ public class StarThirdPersonController : MonoBehaviour
 				rightrearthruster_jet.Stop();
 			}
 
-
-
-		
-
-
 		}
 		else
 		{
@@ -256,8 +253,11 @@ public class StarThirdPersonController : MonoBehaviour
 			radarpower = 0;
 		}
 
-		print (radarpower +" : "+ radarbrightness);
-
+		//print (radarpower +" : "+ radarbrightness);
+		if (Input.GetKeyDown (KeyCode.X))
+		{
+			fireMissleEvent();
+		}
 
 		rigidbody.AddRelativeTorque (0, 0, inputHorz * -turnForce * Time.deltaTime);
 		rigidbody.AddRelativeForce (0, inputVert * thrustForce * Time.deltaTime, 0);
@@ -319,11 +319,21 @@ public class StarThirdPersonController : MonoBehaviour
 		print ("replication respawn");
 		Instantiate(respawnSparks, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
 	}
-	
+
+	void fireMissleEvent()
+	{
+		Instantiate(missle, gameObject.rigidbody.transform.Find("misslespawnpoint").transform.position, gameObject.rigidbody.transform.rotation);	
+		MissleAI missleAI = missle.GetComponent<MissleAI> ();
+		missleAI.setInitialSpeed (gameObject.rigidbody.velocity, gameObject.rigidbody.angularVelocity);
+	}
+
+
+
     public void Reset()
     {
         gameObject.tag = "Player";
     }
+
 
 
 }
