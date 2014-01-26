@@ -23,7 +23,8 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 	private Vector3 correctPlayerVelocity = Vector3.zero;
 	private float 	correctPlayerInputHorz = 0;
 	private float 	correctPlayerInputVert = 0;
-
+	private float 	correctPlayerInputJump = 0;
+	
     void Awake()
     {
 		cameraScript = gameObject.GetComponent<StarThirdPersonCamera>();
@@ -64,6 +65,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			stream.SendNext(gameObject.rigidbody.velocity);
 			stream.SendNext(controllerScript.inputHorz);
 			stream.SendNext(controllerScript.inputVert);
+			stream.SendNext(controllerScript.inputJump);
 			stream.SendNext(playerevent);
 
         }
@@ -77,6 +79,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			correctPlayerVelocity = (Vector3)stream.ReceiveNext();
 			correctPlayerInputHorz = (float)stream.ReceiveNext();
 			correctPlayerInputVert = (float)stream.ReceiveNext();
+			correctPlayerInputJump = (float)stream.ReceiveNext();
 			playerevent = (PlayerEvent)stream.ReceiveNext();
 
         }
@@ -96,6 +99,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			gameObject.rigidbody.velocity = Vector3.Lerp(gameObject.rigidbody.velocity, correctPlayerVelocity, Time.deltaTime * 5);
 			controllerScript.inputHorz = correctPlayerInputHorz;
 			controllerScript.inputVert = correctPlayerInputVert;
+			controllerScript.inputJump = correctPlayerInputJump;
 
 			checkedPlayerEvent();
 		
