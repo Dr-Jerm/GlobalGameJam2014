@@ -156,8 +156,9 @@ public class StarThirdPersonController : MonoBehaviour
 
 	void OnCollisionEnter(Collision col)
 	{
+		//Debug.Log("Collision!");
 		//if (col.gameObject.tag == "asteroid")
-		if(col.gameObject.name == "Asteroid")
+		if(col.gameObject.tag == "asteroid")
 		{
 			ContactPoint contactpoint = col.contacts[0];
 			Vector3 impactvel = col.gameObject.rigidbody.GetRelativePointVelocity(contactpoint.point);
