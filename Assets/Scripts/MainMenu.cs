@@ -30,8 +30,12 @@ public class MainMenu : MonoBehaviour {
 			if (GUI.Button (new Rect(360, 200, 50, 50), "Challenge"))
 			{                                                                
 				onChallengeClicked();                                        
-			}                                                                
-		}  
+			}
+			if (GUI.Button (new Rect(420, 200, 50, 50), "Brag"))
+			{
+				onBragClicked();
+			}
+		}
 	}
 		
 		void Update ()
@@ -109,14 +113,27 @@ public class MainMenu : MonoBehaviour {
 	}  
 
 	private void onChallengeClicked()                                                                                              
-	{ 
+	{
 		FB.AppRequest(                                                                                                         
 		              message: "Space rocks dark! Check it out.",                                                                
 		              title: "Play dark space rocks with me!",                                                                               
 		              callback:appRequestCallback                                                                                        
 		              );                                                                                                                 
 		
-	}                                                                                                                              
+	}
+
+	private void onBragClicked()                                                                                                 
+	{                                                                                                                            
+		FbDebug.Log("onBragClicked");
+		// TODO: add in kill score
+		FB.Feed(                                                                                                                 
+		        linkCaption: "I just dark rocked " + 100 + " rocks!?",               
+		        picture: "http://static.ddmcdn.com/gif/recipes/comet-asteroid-hubble-200-130604.jpg",                                                     
+		        linkName: "Checkout my Rock Dark greatness!",                                                                 
+		        link: "http://apps.facebook.com/" + FB.AppId + "/?challenge_brag=" + (FB.IsLoggedIn ? FB.UserId : "guest")       
+		);                                                                                                               
+	}
+
 	private void appRequestCallback (FBResult result)                                                                              
 	{                                                                                                                              
 		FbDebug.Log("appRequestCallback");                                                                                         
