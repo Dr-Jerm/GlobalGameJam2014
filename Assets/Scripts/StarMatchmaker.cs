@@ -3,7 +3,7 @@ using UnityEngine;
 public class StarMatchmaker : Photon.MonoBehaviour
 {
     private PhotonView myPhotonView;
-
+	public GameObject sound_start;
     // Use this for initialization
     void Start()
     {
@@ -28,7 +28,7 @@ public class StarMatchmaker : Photon.MonoBehaviour
         //spaceship.GetComponent<myThirdPersonController>().isControllable = true;
         myPhotonView = spaceship.GetComponent<PhotonView>();
 		//Camera.main.GetComponent<CamControl>()._target = GameObject.FindGameObjectWithTag ("ship").transform;
-        
+        //sound_start.audio.Play();
     }
 
     void OnGUI()
