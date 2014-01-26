@@ -20,26 +20,7 @@ public class MainMenu : MonoBehaviour {
 	}
 
 	void OnGUI()
-	{   
-		if (GUI.Button (new Rect (460, 260, 20, 20), "Lo"))
-		{                                                                                                            
-			FB.Login ("email,publish_actions", LoginCallback);                                                        
-		}
-		if (FB.IsLoggedIn)                                                   
-		{                                                                    
-			if (GUI.Button (new Rect(460, 280, 20, 20), "Ch"))
-			{                                                                
-				onChallengeClicked();                                        
-			}
-			if (GUI.Button (new Rect(460, 300, 20, 20), "Br"))
-			{
-				onBragClicked();
-			}
-			if (GUI.Button (new Rect(530, 280, 20, 20), "Pu"))
-			{
-				onScorePublishClicked();
-			}
-		}
+	{
 	}
 		
 	void Update ()
@@ -54,6 +35,18 @@ public class MainMenu : MonoBehaviour {
 				{
 					sound.audio.Play();
 					Application.LoadLevel("game");
+				}
+				if(rayCastHit.transform.name == "loginButton")
+				{
+					FB.Login ("email,publish_actions", LoginCallback);
+				}
+				if(rayCastHit.transform.name == "postButton")
+				{
+					onBragClicked();
+				}
+				if(rayCastHit.transform.name == "inviteButton")
+				{
+					onChallengeClicked();
 				}
 				if(rayCastHit.transform.name == "helpButton")
 				{
