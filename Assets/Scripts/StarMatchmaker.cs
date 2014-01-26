@@ -28,7 +28,7 @@ public class StarMatchmaker : Photon.MonoBehaviour
         //spaceship.GetComponent<myThirdPersonController>().isControllable = true;
         myPhotonView = spaceship.GetComponent<PhotonView>();
 		//Camera.main.GetComponent<CamControl>()._target = GameObject.FindGameObjectWithTag ("ship").transform;
-        sound_start.audio.Play();
+        //sound_start.audio.Play();
     }
 
     void OnGUI()
