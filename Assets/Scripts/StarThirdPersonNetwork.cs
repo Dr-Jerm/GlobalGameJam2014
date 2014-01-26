@@ -13,7 +13,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
     StarThirdPersonCamera cameraScript;
     StarThirdPersonController controllerScript;
 
-	private PlayerEvent playerevent = PlayerEvent.None;
+	//private PlayerEvent playerevent = PlayerEvent.None;
 
 
 	private Vector3 correctPlayerPos = Vector3.zero; //We lerp towards this
@@ -23,7 +23,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 	private float 	correctPlayerInputHorz = 0;
 	private float 	correctPlayerInputVert = 0;
 	private float 	correctPlayerInputJump = 0;
-	private PlayerEvent correctplayerevent = PlayerEvent.None;
+	//private PlayerEvent correctplayerevent = PlayerEvent.None;
 	
     void Awake()
     {
@@ -66,7 +66,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			stream.SendNext(controllerScript.inputHorz);
 			stream.SendNext(controllerScript.inputVert);
 			stream.SendNext(controllerScript.inputJump);
-			stream.SendNext(playerevent);
+			//stream.SendNext(playerevent);
 
         }
         else
@@ -80,7 +80,7 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			correctPlayerInputHorz = (float)stream.ReceiveNext();
 			correctPlayerInputVert = (float)stream.ReceiveNext();
 			correctPlayerInputJump = (float)stream.ReceiveNext();
-			correctplayerevent = (PlayerEvent)stream.ReceiveNext();
+			//correctplayerevent = (PlayerEvent)stream.ReceiveNext();
 
         }
     }
@@ -100,44 +100,44 @@ public class StarThirdPersonNetwork : Photon.MonoBehaviour
 			controllerScript.inputHorz = correctPlayerInputHorz;
 			controllerScript.inputVert = correctPlayerInputVert;
 			controllerScript.inputJump = correctPlayerInputJump;
-			if(correctplayerevent != playerevent)
-			{
-				playerevent = correctplayerevent;
-				checkedPlayerEvent();
-			}
+//			if(correctplayerevent != playerevent)
+//			{
+//				playerevent = correctplayerevent;
+//				checkedPlayerEvent();
+//			}
 
 		
         }
     }
 
-	//called by StarThirdPersonController
-	public void pingPlayerEventForReplication(PlayerEvent _playerEvent)
-	{
-		playerevent = _playerEvent;
-
-	}
-
-
-	void checkedPlayerEvent()
-	{
-		if (playerevent == PlayerEvent.Death) 
-		{
-
-			controllerScript.replicatedeathevent();
-
-		}
-		if (playerevent == PlayerEvent.Respawn) 
-		{
-			controllerScript.replicaterespawn();
-
-		}
-		if (playerevent == PlayerEvent.None) 
-		{
-			controllerScript.fixVisible();
-		}
-		playerevent = PlayerEvent.None;
+//	//called by StarThirdPersonController
+//	public void pingPlayerEventForReplication(PlayerEvent _playerEvent)
+//	{
+//		playerevent = _playerEvent;
+//
+//	}
 
 
-	}
+//	void checkedPlayerEvent()
+//	{
+//		if (playerevent == PlayerEvent.Death) 
+//		{
+//
+//			controllerScript.replicatedeathevent();
+//
+//		}
+//		if (playerevent == PlayerEvent.Respawn) 
+//		{
+//			controllerScript.replicaterespawn();
+//
+//		}
+//		if (playerevent == PlayerEvent.None) 
+//		{
+//			controllerScript.fixVisible();
+//		}
+//		playerevent = PlayerEvent.None;
+//
+//
+//	}
 
 }

@@ -22,6 +22,8 @@ public class StarThirdPersonController : MonoBehaviour
 	public float inputVert=0;
 	public float inputHorz=0;
 	public float inputJump=0;
+
+	private PhotonView myPhotonView;
 	
 	int thrustForce = 200; 
 	int turnForce = 50; 
@@ -80,6 +82,8 @@ public class StarThirdPersonController : MonoBehaviour
 		leftfrontthruster_jet = gameObject.transform.Find("leftfrontJet").GetComponent<ParticleSystem>();
 		rightrearthruster_jet = gameObject.transform.Find("rightrearJet").GetComponent<ParticleSystem>();
 		rightfrontthruster_jet = gameObject.transform.Find("rightfrontJet").GetComponent<ParticleSystem>();
+
+		myPhotonView = gameObject.GetComponent<PhotonView> ();
 		
 		meshcollider = gameObject.transform.Find("spaceship_mesh").transform.Find("space_frigate_6:spaceship").GetComponent<MeshCollider>(); 
 		meshRender = gameObject.transform.Find("spaceship_mesh").transform.Find("space_frigate_6:spaceship").GetComponent<MeshRenderer>();
@@ -187,6 +191,8 @@ public class StarThirdPersonController : MonoBehaviour
 			rightrearthruster_jet = gameObject.transform.Find("rightrearJet").GetComponent<ParticleSystem>();
 			rightfrontthruster_jet = gameObject.transform.Find("rightfrontJet").GetComponent<ParticleSystem>();
 
+			myPhotonView = gameObject.GetComponent<PhotonView> ();
+
 
 			meshcollider = gameObject.transform.Find("spaceship_mesh").transform.Find("space_frigate_6:spaceship").GetComponent<MeshCollider>(); 
 			meshRender = gameObject.transform.Find("spaceship_mesh").transform.Find("space_frigate_6:spaceship").GetComponent<MeshRenderer>();
@@ -282,22 +288,28 @@ public class StarThirdPersonController : MonoBehaviour
 		}
 		networkScript.pingPlayerEventForReplication (PlayerEvent.None);
 	}
+
 	void deathevent()
 	{
 		//print("You Died");
-		Instantiate(deathExplosion, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
+
+		myPhotonView.RPC("replicatedeathevent", PhotonTargets.All);
 
 		rigidbody.AddRelativeTorque (rigidbody.angularVelocity*5);
 		rigidbody.AddRelativeForce (rigidbody.velocity*5);
 
-		meshRender.enabled = false;
-		meshcollider.enabled = false;
+//      Instantiate(deathExplosion, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
+//		meshRender.enabled = false;
+//		meshcollider.enabled = false;
 
 		shipIsDead = true;
 		spawntimer = spawntimermax; 
-		networkScript.pingPlayerEventForReplication (PlayerEvent.Death);
+		//networkScript.pingPlayerEventForReplication (PlayerEvent.Death);
+
 		
 	}
+
+	[RPC]
 	public void replicatedeathevent()
 	{
 		//print("MyID:"+gameObject.name+" DIED!");
@@ -306,27 +318,28 @@ public class StarThirdPersonController : MonoBehaviour
 		meshcollider.enabled = false;
 
 	}
-	public void fixVisible()
-	{
-		Debug.Log("VIX VIS");
-		meshRender.enabled = true;
-
-		meshcollider.enabled = true;
-	}
+//	public void fixVisible()
+//	{
+//		Debug.Log("VIX VIS");
+//		meshRender.enabled = true;
+//
+//		meshcollider.enabled = true;
+//	}
 
 
 	void respawn()
 	{
-		meshRender.enabled = true;
-		meshcollider.enabled = true;
-		Instantiate(respawnSparks, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
+		myPhotonView.RPC("replicaterespawn", PhotonTargets.All);
+//		meshRender.enabled = true;
+//		meshcollider.enabled = true;
+//		Instantiate(respawnSparks, gameObject.rigidbody.transform.position, gameObject.rigidbody.transform.rotation);
 
 		shipIsDead = false;
 		shipHealth = shipHealthMax; 
-		networkScript.pingPlayerEventForReplication (PlayerEvent.Respawn);
+		//networkScript.pingPlayerEventForReplication (PlayerEvent.Respawn);
 	}
 
-
+	[RPC]
 	public void replicaterespawn()
 	{
 		meshRender.enabled = true;
